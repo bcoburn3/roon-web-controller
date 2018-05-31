@@ -134,6 +134,19 @@ var roon = new RoonApi({
                         }
                         io.emit("zoneStatus", zoneStatus);
 
+                    } else if (i == "zones_seek_changed") {
+                        for (x in data.zones_seek_changed){
+                            for ( y in zoneStatus){
+                                if (zoneStatus[y].zone_id == data.zones_seek_changed[x].zone_id){
+                                    if (zoneStatus[y].now_playing != undefined) {
+                                        zoneStatus[y].now_playing.seek_position = data.zones_seek_changed[x].seek_position
+                                    }
+                                    zoneStatus[y].queue_time_remaining = data.zones_seek_changed[x].queue_time_remaining
+                                }
+                            }
+                        }
+                        io.emit("zoneStatus", zoneStatus);
+                        
                     } else if (i == "zones_added") {
                         for ( x in data.zones_added ) {
                             zone_id = data.zones_added[x].zone_id;
